@@ -1,23 +1,29 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 // import { PrismaService } from '../prisma/prisma.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 // import { Task } from '@prisma/client';
 
 @Injectable()
 export class JobService {
-  constructor() {}
+  // constructor(private prisma: PrismaService) {}
+
   getJobs() {
-    return [
-      {
-        date: 20240501,
-        place: '中山競馬場',
-        price: 10000,
-        location: '1-1-1',
-        time: 2,
-      },
-    ];
+    // return this.prisma.job.findMany({
+    //   orderBy: {
+    //     createdAt: 'desc',
+    //   },
+    // });
+    // return [
+    //   {
+    //     date: 20240501,
+    //     place: '中山競馬場',
+    //     price: 10000,
+    //     location: '1-1-1',
+    //     time: 2,
+    //   },
+    // ];
   }
+
   // getTasks(userId: number): Promise<Task[]> {
   //   return this.prisma.task.findMany({
   //     where: {

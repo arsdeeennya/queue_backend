@@ -15,8 +15,6 @@ import {
 // import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { TodoService } from './todo.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 // import { Task } from '@prisma/client';
 
 @Controller('todo')
