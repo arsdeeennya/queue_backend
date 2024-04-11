@@ -4,7 +4,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors({
+    credentials: true, // Configures the Access-Control-Allow-Credentials CORS header. Set to true to pass the header, otherwise it is omitted.
+    origin: ['http://localhost:3000'],
+  });
   const config = new DocumentBuilder()
     .setTitle('Queue API')
     .setDescription('The queue API')
