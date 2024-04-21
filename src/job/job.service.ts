@@ -5,14 +5,21 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class JobService {
-  // constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   getJobs() {
+    console.log(22222222);
+
     // return this.prisma.job.findMany({
-    //   orderBy: {
-    //     createdAt: 'desc',
+    //   where: {
+    //     id: 1,
     //   },
     // });
+    return this.prisma.job.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
     // return [
     //   {
     //     date: 20240501,

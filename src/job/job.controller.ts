@@ -25,15 +25,18 @@ export class JobController {
   constructor(private readonly jobService: JobService) {}
   @Get()
   getJobs(): any {
-    return [
-      {
-        date: 20240501,
-        place: '中山競馬場',
-        price: 10000,
-        location: '1-1-1',
-        time: 2,
-      },
-    ];
+    console.log(11111111);
+
+    // return [
+    //   {
+    //     date: 20240501,
+    //     place: '333',
+    //     price: 10000,
+    //     location: '1-1-1',
+    //     time: 2,
+    //   },
+    // ];
+
     return this.jobService.getJobs();
   }
 
