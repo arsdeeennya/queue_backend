@@ -7,28 +7,27 @@ import { PrismaService } from '../prisma/prisma.service';
 export class JobService {
   constructor(private prisma: PrismaService) {}
 
-  getJobs() {
+  getJobs(): Promise<any[]> {
     return this.prisma.job.findMany({
       where: {
         id: 1,
       },
     });
-    // return this.prisma.job.findMany({
-    //   orderBy: {
-    //     createdAt: 'desc',
-    //   },
-    // });
-    // return [
-    //   {
-    //     date: 20240501,
-    //     place: '中山競馬場',
-    //     price: 10000,
-    //     location: '1-1-1',
-    //     time: 2,
-    //   },
-    // ];
   }
-
+  // return this.prisma.job.findMany({
+  //   orderBy: {
+  //     createdAt: 'desc',
+  //   },
+  // });
+  // return [
+  //   {
+  //     date: 20240501,
+  //     place: '中山競馬場',
+  //     price: 10000,
+  //     location: '1-1-1',
+  //     time: 2,
+  //   },
+  // ];
   // getTasks(userId: number): Promise<Task[]> {
   //   return this.prisma.task.findMany({
   //     where: {
