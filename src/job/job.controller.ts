@@ -25,7 +25,7 @@ export class JobController {
   constructor(private readonly jobService: JobService) {}
   @Get()
   getJobs(): any {
-    console.log(11111111);
+    // console.log(11111111);
 
     // return [
     //   {
