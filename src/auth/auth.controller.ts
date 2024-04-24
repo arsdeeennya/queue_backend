@@ -28,6 +28,7 @@ export class AuthController {
 
   @Post('signup')
   signUp(@Body() dto: AuthDto): Promise<Msg> {
+    console.log(dto);
     return this.authService.signUp(dto);
   }
 

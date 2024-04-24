@@ -5,6 +5,7 @@ import { TodoModule } from './todo/todo.module';
 import { JobModule } from './job/job.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PrismaModule } from './prisma/prisma.module';
     TodoModule,
     JobModule,
     PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
