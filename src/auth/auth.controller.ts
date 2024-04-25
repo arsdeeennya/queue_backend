@@ -38,7 +38,9 @@ export class AuthController {
     @Body() dto: AuthDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<Msg> {
+    // jwt生成
     const jwt = await this.authService.login(dto);
+    // jwtをcookieに設定
     res.cookie('access_token', jwt.accessToken, {
       httpOnly: true,
       secure: true,
@@ -53,6 +55,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('/logout')
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response): Msg {
+    console.log(1111);
     res.cookie('access_token', '', {
       httpOnly: true,
       secure: true,
