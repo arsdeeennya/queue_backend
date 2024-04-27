@@ -7,10 +7,8 @@ import { User } from '@prisma/client';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async updateUser(
-    userId: number,
-    dto: UpdateUserDto,
-  ): Promise<Omit<User, 'hashedPassword'>> {
+  // Promise<Omit<User, 'hashedPassword'>>
+  async updateUser(userId: number, dto: UpdateUserDto): Promise<any> {
     const user = await this.prisma.user.update({
       where: {
         id: userId,

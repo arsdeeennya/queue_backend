@@ -6,6 +6,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+  // jwtが正しいかチェック
   constructor(
     private readonly config: ConfigService,
     private readonly prisma: PrismaService,
@@ -24,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       secretOrKey: config.get('JWT_SECRET'),
     });
   }
-
+  // jwtが正しければ、jwtとsercretkeyからpayloadを復元
   async validate(payload: { sub: number; email: string }) {
     const user = await this.prisma.user.findUnique({
       where: {

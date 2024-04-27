@@ -13,16 +13,12 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { Csrf, Msg } from './interfaces/auth.interface';
 
-interface CustomRequest extends Request {
-  csrfToken(): string;
-}
-
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('/csrf')
-  getCsrfToken(@Req() req: CustomRequest): Csrf {
+  getCsrfToken(@Req() req: Request): Csrf {
     return { csrfToken: req.csrfToken() };
   }
 

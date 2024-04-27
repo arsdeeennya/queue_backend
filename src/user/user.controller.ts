@@ -11,13 +11,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get() // why does it inculede  user object in request(probabury by AuthGUard?? read doc!!)
-  getLoginUser(@Req() req: Request): any {
-    console.log(222, req.user);
+  getLoginUser(@Req() req: any): any {
+    if (req.user) {
+      console.log(222, req.user.id);
+    }
     return req.user;
   }
 
   @Patch()
-  updateUser(@Req() req: Request, @Body() dto: UpdateUserDto): any {
-    return this.userService.updateUser(3, dto);
+  updateUser(@Req() req: any, @Body() dto: UpdateUserDto): Promise<any> {
+    return this.userService.updateUser(req.user.id, dto);
   }
 }
