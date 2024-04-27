@@ -3,7 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import * as csurf from 'csurf';
+import * as csurf from 'csurf'; // https://www.npmjs.com/package/csurf
 import { Request } from 'express';
 
 async function bootstrap() {

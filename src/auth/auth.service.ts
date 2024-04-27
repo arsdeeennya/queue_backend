@@ -57,7 +57,7 @@ export class AuthService {
     const secret = this.config.get('JWT_SECRET');
     // 通常、リソースの利用効率を高めるために使用されます。データベースのクエリなど、待機が必要な I/O 操作がある場合に特に役立ちます。
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '5m',
+      // expiresIn: '5m',
       secret: secret,
     });
     return {
