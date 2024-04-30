@@ -11,7 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get() // why does it inculede  user object in request(probabury by AuthGUard?? read doc!!)
-  getLoginUser(@Req() req: any): any {
+  getLoginUser(@Req() req: any): User {
     if (req.user) {
       console.log(222, req.user.id);
     }

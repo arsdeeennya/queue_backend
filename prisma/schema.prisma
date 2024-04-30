@@ -21,6 +21,8 @@ model User {
   hashedPassword String
   nickName String?
   tasks Task[]
+  jobs Job[]
+  chats Chat[]
 }
 
 model Task {
@@ -35,13 +37,23 @@ model Task {
 
 model Job {
   id Int @id @default(autoincrement())
-  name String
-  price Int
   location String
-  queueingTime Int
+  startDate DateTime
+  endDate DateTime
+  price Int
   description String?
   userId Int
-  // user User @relation(fields: [userId], references: [id], onDelete: Cascade)  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+  roomNum Int
+  text String
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

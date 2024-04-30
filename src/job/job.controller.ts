@@ -15,6 +15,7 @@ import {
 // import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { JobService } from './job.service';
+import { Job } from '@prisma/client';
 // import { CreateTaskDto } from './dto/create-task.dto';
 // import { UpdateTaskDto } from './dto/update-task.dto';
 // import { Task } from '@prisma/client';
@@ -24,7 +25,7 @@ import { JobService } from './job.service';
 export class JobController {
   constructor(private readonly jobService: JobService) {}
   @Get()
-  getJobs(): any {
+  getJobs(): Promise<Job[]> {
     // console.log(11111111);
 
     // return [

@@ -1,17 +1,14 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Job } from '@prisma/client';
 // import { Task } from '@prisma/client';
 
 @Injectable()
 export class JobService {
   constructor(private prisma: PrismaService) {}
 
-  getJobs(): Promise<any[]> {
-    return this.prisma.job.findMany({
-      where: {
-        id: 1,
-      },
-    });
+  getJobs(): Promise<Job[]> {
+    return this.prisma.job.findMany();
   }
   // return this.prisma.job.findMany({
   //   orderBy: {

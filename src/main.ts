@@ -17,7 +17,7 @@ async function bootstrap() {
   app.use(
     csurf({
       cookie: {
-        httpOnly: true,
+        httpOnly: true, 
         sameSite: 'none',
         secure: false,
       },
