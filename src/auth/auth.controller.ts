@@ -38,7 +38,13 @@ export class AuthController {
     const jwt = await this.authService.login(dto);
     // jwtをcookieに設定
     res.cookie('access_token', jwt.accessToken, {
-      secure: true,
+      httpOnly: true,
+      secure: false, // Marks the cookie to be used with HTTPS only.
+      sameSite: 'none', // noneにすると異なるドメイン間でcookieが使える。するとchromeではsecureをtrueにする必要がある(trueにするとhttpsのみでcookieが扱える)
+      path: '/',
+    });
+    res.cookie('sign_in', true, {
+      secure: false,
       sameSite: 'none',
       path: '/',
     });
@@ -52,7 +58,13 @@ export class AuthController {
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response): Msg {
     console.log(1111);
     res.cookie('access_token', '', {
-      secure: true,
+      httpOnly: true,
+      secure: false,
+      sameSite: 'none',
+      path: '/',
+    });
+    res.cookie('sign_in', false, {
+      secure: false,
       sameSite: 'none',
       path: '/',
     });
