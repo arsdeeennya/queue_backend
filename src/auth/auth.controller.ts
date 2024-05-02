@@ -39,12 +39,13 @@ export class AuthController {
     // jwtをcookieに設定
     res.cookie('access_token', jwt.accessToken, {
       httpOnly: true,
-      secure: false, // Marks the cookie to be used with HTTPS only.
+      secure: true, // Marks the cookie to be used with HTTPS only.
       sameSite: 'none', // noneにすると異なるドメイン間でcookieが使える。するとchromeではsecureをtrueにする必要がある(trueにするとhttpsのみでcookieが扱える)
       path: '/',
     });
     res.cookie('sign_in', true, {
-      secure: false,
+      httpOnly: true,
+      secure: true,
       sameSite: 'none',
       path: '/',
     });
