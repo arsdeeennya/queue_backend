@@ -26,8 +26,6 @@ export class JobController {
   constructor(private readonly jobService: JobService) {}
   @Get()
   getJobs(): Promise<Job[]> {
-    // console.log(11111111);
-
     // return [
     //   {
     //     date: 20240501,

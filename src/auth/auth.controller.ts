@@ -24,7 +24,6 @@ export class AuthController {
 
   @Post('signup')
   signUp(@Body() dto: AuthDto): Promise<Msg> {
-    console.log(dto);
     return this.authService.signUp(dto);
   }
 
@@ -38,15 +37,9 @@ export class AuthController {
     const jwt = await this.authService.login(dto);
     // jwtをcookieに設定
     res.cookie('access_token', jwt.accessToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true, // Marks the cookie to be used with HTTPS only.
       sameSite: 'none', // noneにすると異なるドメイン間でcookieが使える。するとchromeではsecureをtrueにする必要がある(trueにするとhttpsのみでcookieが扱える)
-      path: '/',
-    });
-    res.cookie('sign_in', true, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
       path: '/',
     });
     return {
@@ -57,15 +50,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('/logout')
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response): Msg {
-    console.log(1111);
-    res.cookie('access_token', '', {
+    res.clearCookie('access_token', {
       httpOnly: true,
-      secure: false,
-      sameSite: 'none',
-      path: '/',
-    });
-    res.cookie('sign_in', false, {
-      secure: false,
+      secure: true,
       sameSite: 'none',
       path: '/',
     });
