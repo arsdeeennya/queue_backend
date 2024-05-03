@@ -8,7 +8,11 @@ export class JobService {
   constructor(private prisma: PrismaService) {}
 
   getJobs(): Promise<Job[]> {
-    return this.prisma.job.findMany();
+    return this.prisma.job.findMany({
+      include: {
+        user: true,
+      },
+    });
   }
   // return this.prisma.job.findMany({
   //   orderBy: {
