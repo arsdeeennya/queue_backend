@@ -11,34 +11,47 @@ import {
   Post,
   // UseGuards,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { JobService } from './job.service';
 import { Job } from '@prisma/client';
+import { CreateJobDto, DeleteJobDto, UpdateJobDto } from './dto/update-job.dto';
+import { AuthGuard } from '@nestjs/passport';
 // import { CreateTaskDto } from './dto/create-task.dto';
 // import { UpdateTaskDto } from './dto/update-task.dto';
 // import { Task } from '@prisma/client';
 
-// @UseGuards(AuthGuard('jwt'))
 @Controller('job')
 export class JobController {
   constructor(private readonly jobService: JobService) {}
   @Get()
   getJobs(): Promise<Job[]> {
-    // return [
-    //   {
-    //     date: 20240501,
-    //     place: '333',
-    //     price: 10000,
-    //     location: '1-1-1',
-    //     time: 2,
-    //   },
-    // ];
-
     return this.jobService.getJobs();
   }
 
+  @HttpCode(HttpStatus.CREATED)
+  @UseGuards(AuthGuard('jwt'))
+  @Post()
+  createJob(@Req() req: any, @Body() dto: CreateJobDto): any {
+    return this.jobService.createJob(req.user.id, dto);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch()
+  updateTaskById(@Req() req: any, @Body() dto: UpdateJobDto): any {
+    if (req.user.id) console.log(req.user.id, dto);
+    return this.jobService.updateJobById(req.user.id, dto);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('jwt'))
+  @Delete()
+  deleteJobById(@Req() req: any, @Body() dto: DeleteJobDto): Promise<void> {
+    console.log(req.user.id, dto);
+    return this.jobService.deleteJobById(req.user.id, dto);
+  }
   // @Get()
   // getTasks(@Req() req: Request): Promise<Task[]> {
   //   return this.todoService.getTasks(req.user.id);

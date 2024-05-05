@@ -1,6 +1,7 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Job } from '@prisma/client';
+import { CreateJobDto, DeleteJobDto, UpdateJobDto } from './dto/update-job.dto';
 // import { Task } from '@prisma/client';
 
 @Injectable()
@@ -11,6 +12,55 @@ export class JobService {
     return this.prisma.job.findMany({
       include: {
         user: true,
+      },
+    });
+  }
+  async updateJobById(userId: number, dto: UpdateJobDto): Promise<any> {
+    const job = await this.prisma.job.findUnique({
+      where: {
+        id: dto.jobId,
+      },
+    });
+    if (!job) throw new ForbiddenException('ジョブが見つかりません。');
+    if (job.applicants.includes(userId)) {
+      throw new ForbiddenException('このユーザーはすでに応募しています。');
+    }
+
+    return this.prisma.job.update({
+      where: {
+        id: dto.jobId,
+      },
+      data: {
+        applicants: {
+          push: userId,
+        },
+      },
+    });
+  }
+
+  async createJob(userId: number, dto: CreateJobDto): Promise<any> {
+    const job = await this.prisma.job.create({
+      data: {
+        ...dto,
+        userId: userId,
+      },
+    });
+    return job;
+  }
+
+  async deleteJobById(userId: number, dto: DeleteJobDto): Promise<void> {
+    const job = await this.prisma.job.findUnique({
+      where: {
+        id: dto.jobId,
+      },
+    });
+
+    if (!job || job.userId !== userId)
+      throw new ForbiddenException('No permission to delete');
+
+    await this.prisma.job.delete({
+      where: {
+        id: dto.jobId,
       },
     });
   }
