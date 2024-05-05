@@ -19,18 +19,16 @@ model User {
   updatedAt DateTime @updatedAt
   email String @unique
   hashedPassword String
-  nickName String?
+  nickName String
   jobs Job[]
   chats Chat[]
-  notices Notice[]
 }
 
 model Notice {
   id Int @id @default(autoincrement())
   description String
   accept Boolean?
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+  read Boolean
   jobId Int
   job Job @relation(fields: [jobId], references: [id])
   createdAt DateTime @default(now())
@@ -43,7 +41,7 @@ model Job {
   startDate DateTime
   endDate DateTime
   price Int
-  description String?
+  description String
   userId Int
   user User @relation(fields: [userId], references: [id])
   notices Notice[]
