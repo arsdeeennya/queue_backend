@@ -27,6 +27,7 @@ model User {
 }
 
 // 1, userIdが自分なら表示。2, applicantIdが自分でacceptがtrueなら
+// 取り消し通知実装
 model Notice {
   id Int @id @default(autoincrement())
   description String
