@@ -15,22 +15,27 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   email String @unique
   hashedPassword String
-  nickName String
+  nickName String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   jobs Job[]
   chats Chat[]
+  tasks Task[]
+  notices Notice[]
 }
 
+// 1, userIdが自分なら表示。2, applicantIdが自分でacceptがtrueなら
 model Notice {
   id Int @id @default(autoincrement())
   description String
   accept Boolean?
-  read Boolean
   jobId Int
-  job Job @relation(fields: [jobId], references: [id])
+  applicantId Int
+  userId Int
+  // read Int[] 
+  user User @relation(fields: [userId], references: [id])  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -41,11 +46,11 @@ model Job {
   startDate DateTime
   endDate DateTime
   price Int
-  description String
+  description String?
   userId Int
-  user User @relation(fields: [userId], references: [id])
-  notices Notice[]
+  user User @relation(fields: [userId], references: [id])  
   applicants Int[]
+  // done Int[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -60,3 +65,12 @@ model Chat {
   updatedAt DateTime @updatedAt
 }
 
+model Task {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String
+  description String?
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)  
+}

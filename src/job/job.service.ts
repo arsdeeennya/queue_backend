@@ -13,8 +13,12 @@ export class JobService {
       include: {
         user: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
+
   async updateJobById(userId: number, dto: UpdateJobDto): Promise<any> {
     const job = await this.prisma.job.findUnique({
       where: {
