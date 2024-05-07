@@ -26,17 +26,16 @@ model User {
   notices Notice[]
 }
 
-// 1, userIdが自分なら表示。2, applicantIdが自分でacceptがtrueなら
 // 取り消し通知実装
 model Notice {
   id Int @id @default(autoincrement())
-  description String
-  accept Boolean?
   jobId Int
   applicantId Int
+  recruiterId Int
   userId Int
-  // read Int[] 
   user User @relation(fields: [userId], references: [id])  
+  job Job @relation(fields: [jobId], references: [id])  
+  read Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -49,9 +48,12 @@ model Job {
   price Int
   description String?
   userId Int
-  user User @relation(fields: [userId], references: [id])  
   applicants Int[]
-  // done Int[]
+  acceptedId Int?
+  rejectedIds Int[]
+  done Int[]
+  user User @relation(fields: [userId], references: [id])  
+  notice Notice[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
