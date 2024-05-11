@@ -3,9 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from '../../prisma/prisma.service';
+import { IJwtStrategy } from '../interface/auth.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class JwtStrategy
+  extends PassportStrategy(Strategy, 'jwt')
+  implements IJwtStrategy
+{
   // jwtが正しいかチェック
   constructor(
     private readonly config: ConfigService,
