@@ -29,12 +29,12 @@ model User {
 // 取り消し通知実装
 model Notice {
   id Int @id @default(autoincrement())
-  jobId Int
+  jobId Int?
   applicantId Int
   recruiterId Int
   userId Int
   user User @relation(fields: [userId], references: [id])  
-  job Job @relation(fields: [jobId], references: [id])  
+  job Job? @relation(fields: [jobId], references: [id], onDelete: SetNull)  
   read Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TodoModule } from './todo/todo.module';
 import { ChatModule } from './chat/chat.module';
+import { NoticeModule } from './notice/notice.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ChatModule } from './chat/chat.module';
     UserModule,
     TodoModule,
     ChatModule,
+    NoticeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
