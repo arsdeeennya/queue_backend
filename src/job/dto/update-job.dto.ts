@@ -33,4 +33,3 @@ export class DeleteJobDto {
   @IsNotEmpty()
   jobId: number;
 }
-

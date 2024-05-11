@@ -6,6 +6,11 @@ import { PrismaModule } from '../prisma/prisma.module';
 @Module({
   imports: [PrismaModule],
   controllers: [ChatController],
-  providers: [ChatService],
+  providers: [
+    {
+      provide: 'ChatService',
+      useClass: ChatService,
+    },
+  ],
 })
 export class ChatModule {}

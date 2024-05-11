@@ -1,16 +1,15 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Job, Notice } from '@prisma/client';
+import { Notice } from '@prisma/client';
 import { CreateNoticeDto } from './dto/create-notice.dto';
-// import { CreateJobDto, DeleteJobDto, UpdateJobDto } from './dto/update-job.dto';
-// import { Task } from '@prisma/client';
+import { INoticeService } from 'src/notice/interface/notice.interface';
 
 @Injectable()
-export class NoticeService {
+export class NoticeService implements INoticeService {
   constructor(private prisma: PrismaService) {}
 
-  getNotices(userId: number): Promise<Notice[]> {
-    return this.prisma.notice.findMany({
+  async getNotices(userId: number): Promise<Notice[]> {
+    return await this.prisma.notice.findMany({
       where: {
         userId: userId,
         read: false,

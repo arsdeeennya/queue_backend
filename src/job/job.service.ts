@@ -2,7 +2,7 @@ import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Job } from '@prisma/client';
 import { CreateJobDto, DeleteJobDto, UpdateJobDto } from './dto/update-job.dto';
-import { IJobService } from './interface/user.service.interface';
+import { IJobService } from './interface/job.interface';
 
 @Injectable()
 export class JobService implements IJobService {

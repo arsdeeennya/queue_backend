@@ -5,10 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
-import { Msg, Jwt } from './interfaces/auth.interface';
+import { Msg, Jwt, IAuthService } from './interface/auth.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,

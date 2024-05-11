@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseIntPipe,
   Patch,
@@ -24,7 +25,10 @@ import { CreateNoticeDto } from './dto/create-notice.dto';
 @Controller('notice')
 @UseGuards(AuthGuard('jwt'))
 export class NoticeController {
-  constructor(private readonly noticeService: NoticeService) {}
+  constructor(
+    @Inject('NoticeService')
+    private readonly noticeService: NoticeService,
+  ) {}
   @Get()
   getNotices(@Req() req: Request): Promise<Notice[]> {
     return this.noticeService.getNotices(req.user.id);

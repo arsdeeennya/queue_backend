@@ -6,6 +6,11 @@ import { PrismaModule } from '../prisma/prisma.module';
 @Module({
   imports: [PrismaModule],
   controllers: [NoticeController],
-  providers: [NoticeService],
+  providers: [
+    {
+      provide: 'NoticeService',
+      useClass: NoticeService,
+    },
+  ],
 })
 export class NoticeModule {}
