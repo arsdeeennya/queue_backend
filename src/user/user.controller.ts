@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { UserService } from './user.service';
@@ -8,15 +16,21 @@ import { User } from '@prisma/client';
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @Inject('UserService')
+    private readonly userService: UserService,
+  ) {}
 
   @Get() // why does it inculede  user object in request(probabury by AuthGUard?? read doc!!)
-  getLoginUser(@Req() req: any): User {
-    return req.user;
+  getLoginUser(@Req() req: Request): User {
+    return req.user as User;
   }
 
   @Patch()
-  updateUser(@Req() req: any, @Body() dto: UpdateUserDto): Promise<any> {
+  updateUser(
+    @Req() req: Request,
+    @Body() dto: UpdateUserDto,
+  ): Promise<Omit<User, 'hashedPassword'>> {
     return this.userService.updateUser(req.user.id, dto);
   }
 }

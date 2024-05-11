@@ -25,26 +25,26 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Get()
-  getTasks(@Req() req: any): Promise<Task[]> {
+  getTasks(@Req() req: Request): Promise<Task[]> {
     return this.todoService.getTasks(req.user.id);
   }
 
   @Get(':id')
   getTaskById(
-    @Req() req: any,
+    @Req() req: Request,
     @Param('id', ParseIntPipe) taskId: number,
   ): Promise<Task> {
     return this.todoService.getTaskById(req.user.id, taskId);
   }
 
   @Post()
-  createTask(@Req() req: any, @Body() dto: CreateTaskDto): Promise<Task> {
+  createTask(@Req() req: Request, @Body() dto: CreateTaskDto): Promise<Task> {
     return this.todoService.createTask(req.user.id, dto);
   }
 
   @Patch(':id')
   updateTaskById(
-    @Req() req: any,
+    @Req() req: Request,
     @Param('id', ParseIntPipe) taskId: number,
     @Body() dto: UpdateTaskDto,
   ): Promise<Task> {
@@ -54,7 +54,7 @@ export class TodoController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   deleteTaskById(
-    @Req() req: any,
+    @Req() req: Request,
     @Param('id', ParseIntPipe) taskId: number,
   ): Promise<void> {
     return this.todoService.deleteTaskById(req.user.id, taskId);

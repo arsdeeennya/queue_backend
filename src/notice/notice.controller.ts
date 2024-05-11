@@ -26,7 +26,7 @@ import { CreateNoticeDto } from './dto/create-notice.dto';
 export class NoticeController {
   constructor(private readonly noticeService: NoticeService) {}
   @Get()
-  getNotices(@Req() req: any): Promise<Notice[]> {
+  getNotices(@Req() req: Request): Promise<Notice[]> {
     return this.noticeService.getNotices(req.user.id);
   }
 
@@ -46,7 +46,7 @@ export class NoticeController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  createNotice(@Req() req: any, @Body() dto: CreateNoticeDto): void {
+  createNotice(@Req() req: Request, @Body() dto: CreateNoticeDto): void {
     this.noticeService.createNotice(req.user.id, dto);
   }
 }

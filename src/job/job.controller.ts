@@ -5,8 +5,9 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
-  ParseIntPipe,
+  Inject,
+  // Param,
+  // ParseIntPipe,
   Patch,
   Post,
   // UseGuards,
@@ -25,7 +26,10 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('job')
 export class JobController {
-  constructor(private readonly jobService: JobService) {}
+  constructor(
+    @Inject('JobService')
+    private readonly jobService: JobService,
+  ) {}
   @Get()
   getJobs(): Promise<Job[]> {
     return this.jobService.getJobs();
@@ -34,13 +38,14 @@ export class JobController {
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  createJob(@Req() req: any, @Body() dto: CreateJobDto): any {
+  createJob(@Req() req: Request, @Body() dto: CreateJobDto): Promise<Job> {
+    console.log(req);
     return this.jobService.createJob(req.user.id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch()
-  updateTaskById(@Req() req: any, @Body() dto: UpdateJobDto): any {
+  updateJobById(@Req() req: Request, @Body() dto: UpdateJobDto): Promise<Job> {
     if (req.user.id) console.log(req.user.id, dto);
     return this.jobService.updateJobById(req.user.id, dto);
   }
@@ -48,7 +53,7 @@ export class JobController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))
   @Delete()
-  deleteJobById(@Req() req: any, @Body() dto: DeleteJobDto): Promise<void> {
+  deleteJobById(@Req() req: Request, @Body() dto: DeleteJobDto): Promise<void> {
     console.log(req.user.id, dto);
     return this.jobService.deleteJobById(req.user.id, dto);
   }
