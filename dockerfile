@@ -29,4 +29,4 @@ EXPOSE 3001
 
 # Start the server using the production build
 # CMD ["npm", "run", "start:prod"]
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:dev"]
