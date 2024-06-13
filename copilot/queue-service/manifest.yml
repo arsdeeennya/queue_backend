@@ -43,8 +43,8 @@ network:
 #secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
 #  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.
 secrets:
-  DATABASE_URL: /copilot/queue-aws-container/test/secrets/DATABASE_URL
-
+  DATABASE_URL: /copilot/queue-aws-container/prod/secrets/POSTGRES_HOST
+  
 # You can override any of the values defined above by environment.
 #environments:
 #  test:
