@@ -44,7 +44,7 @@ network:
 #  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.
 secrets:
   DATABASE_URL: /copilot/queue-aws-container/prod/secrets/POSTGRES_HOST
-  
+  JWT_SECRET: /copilot/queue-aws-container/prod/secrets/JWT_SECRET
 # You can override any of the values defined above by environment.
 #environments:
 #  test:
