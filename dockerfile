@@ -13,7 +13,6 @@ RUN npm install
 COPY prisma ./prisma
 
 RUN npx prisma generate
-RUN npx prisma migrate deploy
 
 # Bundle app source
 COPY . .
@@ -29,5 +28,5 @@ COPY . .
 EXPOSE 3001
 
 # Start the server using the production build
+# CMD ["npm", "run", "start:prod"]
 CMD ["npm", "run", "start:dev"]
-# CMD ["npm", "run", "start:dev"]
