@@ -21,6 +21,10 @@ export class NoticeService implements INoticeService {
       where: {
         userId: userId,
       },
+      include: {
+        job: true,
+        applicant: true,
+      },
     });
   }
 

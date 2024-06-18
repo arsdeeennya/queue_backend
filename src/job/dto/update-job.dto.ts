@@ -28,6 +28,26 @@ export class UpdateJobDto {
   jobId: number;
 }
 
+export class UpdateJobAddAcceptedIdDto {
+  @IsNumber()
+  @IsNotEmpty()
+  acceptedId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  jobId: number;
+}
+
+export class UpdateJobAddRejectedIdDto {
+  @IsNumber()
+  @IsNotEmpty()
+  rejectedId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  jobId: number;
+}
+
 export class DeleteJobDto {
   @IsNumber()
   @IsNotEmpty()

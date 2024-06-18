@@ -24,6 +24,7 @@ model User {
   chats Chat[]
   tasks Task[]
   notices Notice[]
+  noticesAsApplicant Notice[] @relation("Applicant")
 }
 
 // 取り消し通知実装
@@ -33,8 +34,9 @@ model Notice {
   applicantId Int
   recruiterId Int
   userId Int
-  user User @relation(fields: [userId], references: [id])  
-  job Job? @relation(fields: [jobId], references: [id], onDelete: SetNull)  
+  user User @relation(fields: [userId], references: [id])
+  applicant User @relation("Applicant", fields: [applicantId], references: [id])
+  job Job? @relation(fields: [jobId], references: [id], onDelete: SetNull)
   read Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,6 +82,14 @@ model Task {
 
 model Test {
   id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Applicant{
+  id Int @id @default(autoincrement())
+  userId Int
+  jobId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

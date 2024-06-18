@@ -18,7 +18,13 @@ import {
 import { Request } from 'express';
 import { JobService } from './job.service';
 import { Job } from '@prisma/client';
-import { CreateJobDto, DeleteJobDto, UpdateJobDto } from './dto/update-job.dto';
+import {
+  CreateJobDto,
+  DeleteJobDto,
+  UpdateJobAddAcceptedIdDto,
+  UpdateJobAddRejectedIdDto,
+  UpdateJobDto,
+} from './dto/update-job.dto';
 import { AuthGuard } from '@nestjs/passport';
 // import { CreateTaskDto } from './dto/create-task.dto';
 // import { UpdateTaskDto } from './dto/update-task.dto';
@@ -46,6 +52,16 @@ export class JobController {
   @Patch()
   updateJobById(@Req() req: Request, @Body() dto: UpdateJobDto): Promise<Job> {
     return this.jobService.updateJobById(req.user.id, dto);
+  }
+
+  @Patch('addAcceptedId/')
+  addAcceptedId(@Body() dto: UpdateJobAddAcceptedIdDto): Promise<void> {
+    return this.jobService.addAcceptedId(dto);
+  }
+
+  @Patch('addRejectedId/')
+  addRejectedId(@Body() dto: UpdateJobAddRejectedIdDto): Promise<void> {
+    return this.jobService.addRejectedId(dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
