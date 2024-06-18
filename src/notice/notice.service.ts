@@ -9,10 +9,37 @@ export class NoticeService implements INoticeService {
   constructor(private prisma: PrismaService) {}
 
   async getNotices(userId: number): Promise<Notice[]> {
+    await this.prisma.notice.updateMany({
+      where: {
+        userId: userId,
+      },
+      data: {
+        read: true,
+      },
+    });
     return await this.prisma.notice.findMany({
       where: {
         userId: userId,
-        read: false,
+      },
+    });
+  }
+
+  async getNoticesReadCheck(userId: number, read: boolean): Promise<Notice[]> {
+    return await this.prisma.notice.findMany({
+      where: {
+        userId: userId,
+        read: read,
+      },
+    });
+  }
+
+  async updateNoticesById(userId: number): Promise<void> {
+    await this.prisma.notice.updateMany({
+      where: {
+        userId: userId,
+      },
+      data: {
+        read: true,
       },
     });
   }

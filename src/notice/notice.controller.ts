@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Inject,
   Param,
+  ParseBoolPipe,
   ParseIntPipe,
   Patch,
   Post,
@@ -29,11 +30,24 @@ export class NoticeController {
     @Inject('NoticeService')
     private readonly noticeService: NoticeService,
   ) {}
-  @Get()
+
+  @Get('getNotices/')
   getNotices(@Req() req: Request): Promise<Notice[]> {
     return this.noticeService.getNotices(req.user.id);
   }
 
+  @Get('read/:read')
+  getNoticesReadCheck(
+    @Req() req: Request,
+    @Param('read', ParseBoolPipe) read: boolean,
+  ): Promise<Notice[]> {
+    return this.noticeService.getNoticesReadCheck(req.user.id, read);
+  }
+
+  @Patch()
+  updateNoticesById(@Req() req: Request): Promise<void> {
+    return this.noticeService.updateNoticesById(req.user.id);
+  }
   // こんなふうに, 既読チェックする
   // @Get()
   // getTasks(@Req() req: Request): Promise<Task[]> {

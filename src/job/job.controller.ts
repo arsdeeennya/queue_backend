@@ -39,14 +39,12 @@ export class JobController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   createJob(@Req() req: Request, @Body() dto: CreateJobDto): Promise<Job> {
-    console.log(req);
     return this.jobService.createJob(req.user.id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch()
   updateJobById(@Req() req: Request, @Body() dto: UpdateJobDto): Promise<Job> {
-    if (req.user.id) console.log(req.user.id, dto);
     return this.jobService.updateJobById(req.user.id, dto);
   }
 
@@ -54,7 +52,6 @@ export class JobController {
   @UseGuards(AuthGuard('jwt'))
   @Delete()
   deleteJobById(@Req() req: Request, @Body() dto: DeleteJobDto): Promise<void> {
-    console.log(req.user.id, dto);
     return this.jobService.deleteJobById(req.user.id, dto);
   }
   // @Get()
