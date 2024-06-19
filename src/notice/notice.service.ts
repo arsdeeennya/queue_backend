@@ -85,7 +85,6 @@ export class NoticeService implements INoticeService {
       },
       data: {
         ...dto,
-        userId: userId,
         applicantId: userId,
         recruiterId: job.userId,
       },
