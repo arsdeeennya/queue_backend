@@ -64,6 +64,15 @@ export class JobService implements IJobService {
         acceptedId: dto.acceptedId,
       },
     });
+
+    await this.prisma.notice.update({
+      where: {
+        id: dto.noticeId,
+      },
+      data: {
+        answer: true,
+      },
+    });
   }
 
   async addRejectedId(dto: UpdateJobAddRejectedIdDto): Promise<void> {
@@ -82,6 +91,15 @@ export class JobService implements IJobService {
         rejectedIds: {
           push: dto.rejectedId,
         },
+      },
+    });
+
+    await this.prisma.notice.update({
+      where: {
+        id: dto.noticeId,
+      },
+      data: {
+        answer: false,
       },
     });
   }

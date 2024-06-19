@@ -25,6 +25,9 @@ export class NoticeService implements INoticeService {
         job: true,
         applicant: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 

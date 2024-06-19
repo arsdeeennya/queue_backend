@@ -38,6 +38,7 @@ model Notice {
   applicant User @relation("Applicant", fields: [applicantId], references: [id])
   job Job? @relation(fields: [jobId], references: [id], onDelete: SetNull)
   read Boolean @default(false)
+  answer Boolean?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -36,6 +36,10 @@ export class UpdateJobAddAcceptedIdDto {
   @IsNumber()
   @IsNotEmpty()
   jobId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  noticeId: number;
 }
 
 export class UpdateJobAddRejectedIdDto {
@@ -46,6 +50,10 @@ export class UpdateJobAddRejectedIdDto {
   @IsNumber()
   @IsNotEmpty()
   jobId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  noticeId: number;
 }
 
 export class DeleteJobDto {
