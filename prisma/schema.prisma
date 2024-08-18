@@ -22,25 +22,6 @@ model User {
   updatedAt DateTime @updatedAt
   jobs Job[]
   chats Chat[]
-  tasks Task[]
-  notices Notice[]
-  noticesAsApplicant Notice[] @relation("Applicant")
-}
-
-// 取り消し通知実装
-model Notice {
-  id Int @id @default(autoincrement())
-  jobId Int?
-  applicantId Int
-  recruiterId Int
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-  applicant User @relation("Applicant", fields: [applicantId], references: [id])
-  job Job? @relation(fields: [jobId], references: [id], onDelete: SetNull)
-  read Boolean @default(false)
-  answer Boolean?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Job {
@@ -51,14 +32,21 @@ model Job {
   price Int
   description String?
   userId Int
-  applicants Int[]
-  acceptedId Int?
-  rejectedIds Int[]
-  done Int[]
+  status Boolean? // null進行中、true完了
   user User @relation(fields: [userId], references: [id])  
-  notice Notice[]
+  applicants Applicants[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Applicants{
+  id Int @id @default(autoincrement())
+  userId Int // 求職者のID
+  jobId Int
+  status Boolean? // null審査中、true採用, false不採用
+  job Job @relation(fields: [jobId], references: [id])
+  createdAt DateTime @default(now()) // 応募きた日時通知
+  updatedAt DateTime @updatedAt // ステータス変更日時、採用と不採用通知
 }
 
 model Chat {
@@ -67,30 +55,6 @@ model Chat {
   text String
   userId Int
   user User @relation(fields: [userId], references: [id])  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Task {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title String
-  description String?
-  userId Int
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)  
-}
-
-model Test {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Applicant{
-  id Int @id @default(autoincrement())
-  userId Int
-  jobId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -8,7 +8,7 @@ import {
   Inject,
   // Param,
   // ParseIntPipe,
-  Patch,
+  // Patch,
   Post,
   // UseGuards,
   Req,
@@ -16,14 +16,14 @@ import {
 } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { JobService } from './job.service';
+import { JobService, JobWithApplicants } from './job.service';
 import { Job } from '@prisma/client';
 import {
   CreateJobDto,
   DeleteJobDto,
-  UpdateJobAddAcceptedIdDto,
-  UpdateJobAddRejectedIdDto,
-  UpdateJobDto,
+  // UpdateJobAddAcceptedIdDto,
+  // UpdateJobAddRejectedIdDto,
+  // UpdateJobDto,
 } from './dto/update-job.dto';
 import { AuthGuard } from '@nestjs/passport';
 // import { CreateTaskDto } from './dto/create-task.dto';
@@ -37,7 +37,9 @@ export class JobController {
     private readonly jobService: JobService,
   ) {}
   @Get()
-  getJobs(): Promise<Job[]> {
+  getJobs(): Promise<JobWithApplicants[]> {
+    console.log(3333333);
+
     return this.jobService.getJobs();
   }
 
@@ -48,21 +50,27 @@ export class JobController {
     return this.jobService.createJob(req.user.id, dto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Patch()
-  updateJobById(@Req() req: Request, @Body() dto: UpdateJobDto): Promise<Job> {
-    return this.jobService.updateJobById(req.user.id, dto);
-  }
+  // //応募する
+  // @UseGuards(AuthGuard('jwt'))
+  // @Patch()
+  // updateJobById(
+  //   @Req() req: Request,
+  //   @Body() dto: UpdateJobDto,
+  // ): Promise<Applicants> {
+  //   return this.jobService.updateJobById(req.user.id, dto);
+  // }
 
-  @Patch('addAcceptedId/')
-  addAcceptedId(@Body() dto: UpdateJobAddAcceptedIdDto): Promise<void> {
-    return this.jobService.addAcceptedId(dto);
-  }
+  // // 採用
+  // @Patch('addAcceptedId/')
+  // addAcceptedId(@Body() dto: UpdateJobAddAcceptedIdDto): Promise<void> {
+  //   return this.jobService.addAcceptedId(dto);
+  // }
 
-  @Patch('addRejectedId/')
-  addRejectedId(@Body() dto: UpdateJobAddRejectedIdDto): Promise<void> {
-    return this.jobService.addRejectedId(dto);
-  }
+  // // 不採用
+  // @Patch('addRejectedId/')
+  // addRejectedId(@Body() dto: UpdateJobAddRejectedIdDto): Promise<void> {
+  //   return this.jobService.addRejectedId(dto);
+  // }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))

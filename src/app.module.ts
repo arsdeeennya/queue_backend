@@ -6,9 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { TodoModule } from './todo/todo.module';
 import { ChatModule } from './chat/chat.module';
-import { NoticeModule } from './notice/notice.module';
+import { ApplicantModule } from './applicant/applicant.module';
 
 @Module({
   imports: [
@@ -17,9 +16,8 @@ import { NoticeModule } from './notice/notice.module';
     PrismaModule,
     AuthModule,
     UserModule,
-    TodoModule,
     ChatModule,
-    NoticeModule,
+    ApplicantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
