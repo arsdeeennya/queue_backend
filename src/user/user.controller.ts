@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { UserService } from './user.service';
+import { UserService, UserWithJobs } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '@prisma/client';
 
@@ -21,9 +21,16 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  @Get() // why does it inculede  user object in request(probabury by AuthGUard?? read doc!!)
-  getLoginUser(@Req() req: Request): User {
-    return req.user as User;
+  // @Get() // why does it inculede  user object in request(probabury by AuthGUard?? read doc!!)
+  // getLoginUser(@Req() req: Request): User {
+  //   console.log(6666666);
+  //   return req.user as User;
+  // }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  getUser(@Req() req: Request): Promise<UserWithJobs> {
+    return this.userService.getUser(req.user.id);
   }
 
   @Patch()

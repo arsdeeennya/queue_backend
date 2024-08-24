@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateApplicantDto {
   @IsNumber()
@@ -12,18 +12,14 @@ export class UpdateJobDto {
   jobId: number;
 }
 
-export class UpdateJobAddAcceptedIdDto {
+export class UpdateApplicantDto {
   @IsNumber()
   @IsNotEmpty()
-  acceptedId: number;
+  applicantId: number;
 
-  @IsNumber()
+  @IsBoolean()
   @IsNotEmpty()
-  jobId: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  noticeId: number;
+  status: boolean;
 }
 
 export class UpdateJobAddRejectedIdDto {

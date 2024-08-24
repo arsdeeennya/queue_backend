@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '@prisma/client';
+import { Applicants, Job, User } from '@prisma/client';
 import { IUserService } from './interface/user.interface';
+
+export type UserWithJobs = User & {
+  jobs: (Job & {
+    applicants: Applicants[];
+  })[];
+};
 
 @Injectable()
 export class UserService implements IUserService {
@@ -22,5 +28,20 @@ export class UserService implements IUserService {
     });
     delete user.hashedPassword;
     return user;
+  }
+
+  async getUser(userId: number): Promise<UserWithJobs> {
+    return await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        jobs: {
+          include: {
+            applicants: true,
+          },
+        },
+      },
+    });
   }
 }

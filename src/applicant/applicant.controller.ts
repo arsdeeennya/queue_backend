@@ -3,13 +3,14 @@ import {
   Controller,
   Get,
   Inject,
+  Patch,
   Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApplicantService } from './applicant.service';
+import { ApplicantService, ApplicantsWithJob } from './applicant.service';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateApplicantDto } from './dto/applicant.dto';
+import { CreateApplicantDto, UpdateApplicantDto } from './dto/applicant.dto';
 import { Applicants } from '@prisma/client';
 // import { UpdateJobDto } from 'src/job/dto/update-job.dto';
 import { Request } from 'express';
@@ -23,8 +24,8 @@ export class ApplicantController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getApplicants(): Promise<Applicants[]> {
-    return this.applicantService.getApplicants();
+  getApplicants(@Req() req: Request): Promise<ApplicantsWithJob[]> {
+    return this.applicantService.getApplicants(req.user.id);
   }
 
   //応募する
@@ -38,10 +39,11 @@ export class ApplicantController {
   }
 
   // 採用
-  // @Patch()
-  // updateApplicant(@Body() dto: UpdateApplicantDto): Promise<void> {
-  //   return this.applicantService.updateApplicant(dto);
-  // }
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('updateStatus')
+  updateApplicant(@Body() dto: UpdateApplicantDto): Promise<void> {
+    return this.applicantService.updateApplicant(dto);
+  }
 
   // // 不採用
   // @Patch('addRejectedId/')

@@ -45,8 +45,8 @@ model Applicants{
   jobId Int
   status Boolean? // null審査中、true採用, false不採用
   job Job @relation(fields: [jobId], references: [id])
-  createdAt DateTime @default(now()) // 応募きた日時通知
-  updatedAt DateTime @updatedAt // ステータス変更日時、採用と不採用通知
+  createdAt DateTime @default(now()) // 応募きた日時
+  updatedAt DateTime @updatedAt // 採用と不採用通知
 }
 
 model Chat {
