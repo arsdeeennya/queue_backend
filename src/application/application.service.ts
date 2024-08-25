@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateApplicantDto, UpdateApplicantDto } from './dto/applicant.dto';
-import { Applicants, Job, User } from '@prisma/client';
-import { IApplicantService } from './interface/applicant.interface';
-import { Prisma } from '@prisma/client';
+import {
+  CreateApplicationDto,
+  UpdateApplicationDto,
+} from './dto/application.dto';
+import { Applications, Jobs, Users } from '@prisma/client';
+import { IApplicationService } from './interface/application.interface';
 
-export type ApplicantsWithJob = Applicants & {
-  job: Job & {
-    user: User;
+export type ApplicationsWithJob = Applications & {
+  jobs: Jobs & {
+    users: Users;
   };
 };
 
 @Injectable()
-export class ApplicantService implements IApplicantService {
+export class ApplicationService implements IApplicationService {
   constructor(private prisma: PrismaService) {}
 
   // 応募を取得する
-  async getApplicants(userId: number): Promise<ApplicantsWithJob[]> {
-    // const result = await this.prisma.$queryRaw<ApplicantsWithJob[]>(
+  async getApplications(userId: number): Promise<ApplicationsWithJob[]> {
+    // const result = await this.prisma.$queryRaw<ApplicationsWithJob[]>(
     //   Prisma.sql`
     //     SELECT *
-    //     FROM "Applicants" a
+    //     FROM "Applications" a
     //     JOIN "Job" j ON a."jobId" = j."id"
     //     JOIN "User" u ON j."userId" = u."id"
     //     WHERE (a."userId" = ${userId}
@@ -41,11 +43,11 @@ export class ApplicantService implements IApplicantService {
     // console.log(8888888);
     // console.log(result);
     // return result;
-    return await this.prisma.applicants.findMany({
+    return await this.prisma.applications.findMany({
       include: {
-        job: {
+        jobs: {
           include: {
-            user: true,
+            users: true,
           },
         },
       },
@@ -55,22 +57,22 @@ export class ApplicantService implements IApplicantService {
             userId: userId,
             NOT: {
               updatedAt: {
-                equals: this.prisma.applicants.fields.createdAt,
+                equals: this.prisma.applications.fields.createdAt,
               },
             },
           },
-          { job: { userId: userId } },
+          { jobs: { userId: userId } },
         ],
       },
     });
   }
 
   // 応募者を作成する
-  async createApplicant(
+  async createApplication(
     userId: number,
-    dto: CreateApplicantDto,
-  ): Promise<Applicants> {
-    return this.prisma.applicants.create({
+    dto: CreateApplicationDto,
+  ): Promise<Applications> {
+    return this.prisma.applications.create({
       data: {
         ...dto,
         userId: userId,
@@ -79,10 +81,10 @@ export class ApplicantService implements IApplicantService {
   }
 
   // 応募者を更新する
-  async updateApplicant(dto: UpdateApplicantDto): Promise<void> {
-    const { applicantId, status } = dto;
-    await this.prisma.applicants.update({
-      where: { id: applicantId },
+  async updateApplication(dto: UpdateApplicationDto): Promise<void> {
+    const { applicationId, status } = dto;
+    await this.prisma.applications.update({
+      where: { id: applicationId },
       data: { status },
     });
   }

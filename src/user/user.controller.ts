@@ -11,7 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { UserService, UserWithJobs } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from '@prisma/client';
+import { Users } from '@prisma/client';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
@@ -37,7 +37,7 @@ export class UserController {
   updateUser(
     @Req() req: Request,
     @Body() dto: UpdateUserDto,
-  ): Promise<Omit<User, 'hashedPassword'>> {
+  ): Promise<Omit<Users, 'hashedPassword'>> {
     return this.userService.updateUser(req.user.id, dto);
   }
 }

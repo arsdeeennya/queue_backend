@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { Chat } from '@prisma/client';
+import { Chats } from '@prisma/client';
 
 @Controller('chat')
 export class ChatController {
@@ -10,7 +10,7 @@ export class ChatController {
   ) {}
 
   @Get()
-  getChats(): Promise<Chat[]> {
+  getChats(): Promise<Chats[]> {
     return this.chatService.getChats();
   }
 }

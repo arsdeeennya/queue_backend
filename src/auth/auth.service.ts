@@ -18,7 +18,7 @@ export class AuthService implements IAuthService {
     const hashed = await bcrypt.hash(dto.password, 12);
     try {
       // create to user model
-      await this.prisma.user.create({
+      await this.prisma.users.create({
         data: {
           email: dto.email,
           hashedPassword: hashed,
@@ -39,7 +39,7 @@ export class AuthService implements IAuthService {
     }
   }
   async login(dto: AuthDto): Promise<Jwt> {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.users.findUnique({
       where: {
         email: dto.email,
       },

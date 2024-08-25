@@ -1,5 +1,5 @@
 import { AuthDto } from '../dto/auth.dto';
-import { User } from '@prisma/client';
+import { Users } from '@prisma/client';
 
 export interface Msg {
   message: string;
@@ -18,5 +18,5 @@ export interface IAuthService {
 }
 
 export interface IJwtStrategy {
-  validate(payload: { sub: number; email: string }): Promise<User>;
+  validate(payload: { sub: number; email: string }): Promise<Users>;
 }

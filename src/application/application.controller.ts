@@ -8,41 +8,44 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApplicantService, ApplicantsWithJob } from './applicant.service';
+import { ApplicationService, ApplicationsWithJob } from './application.service';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateApplicantDto, UpdateApplicantDto } from './dto/applicant.dto';
-import { Applicants } from '@prisma/client';
+import {
+  CreateApplicationDto,
+  UpdateApplicationDto,
+} from './dto/application.dto';
+import { Applications } from '@prisma/client';
 // import { UpdateJobDto } from 'src/job/dto/update-job.dto';
 import { Request } from 'express';
 
-@Controller('applicant')
-export class ApplicantController {
+@Controller('application')
+export class ApplicationController {
   constructor(
-    @Inject('ApplicantService')
-    private readonly applicantService: ApplicantService,
+    @Inject('ApplicationService')
+    private readonly applicationService: ApplicationService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getApplicants(@Req() req: Request): Promise<ApplicantsWithJob[]> {
-    return this.applicantService.getApplicants(req.user.id);
+  getApplications(@Req() req: Request): Promise<ApplicationsWithJob[]> {
+    return this.applicationService.getApplications(req.user.id);
   }
 
   //応募する
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  createApplicant(
+  createApplication(
     @Req() req: Request,
-    @Body() dto: CreateApplicantDto,
-  ): Promise<Applicants> {
-    return this.applicantService.createApplicant(req.user.id, dto);
+    @Body() dto: CreateApplicationDto,
+  ): Promise<Applications> {
+    return this.applicationService.createApplication(req.user.id, dto);
   }
 
   // 採用
   @UseGuards(AuthGuard('jwt'))
   @Patch('updateStatus')
-  updateApplicant(@Body() dto: UpdateApplicantDto): Promise<void> {
-    return this.applicantService.updateApplicant(dto);
+  updateApplication(@Body() dto: UpdateApplicationDto): Promise<void> {
+    return this.applicationService.updateApplication(dto);
   }
 
   // // 不採用

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Chat } from '@prisma/client';
+import { Chats } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { IChatService } from './interface/chat.interface';
 
@@ -7,7 +7,7 @@ import { IChatService } from './interface/chat.interface';
 export class ChatService implements IChatService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getChats(): Promise<Chat[]> {
-    return this.prisma.chat.findMany();
+  getChats(): Promise<Chats[]> {
+    return this.prisma.chats.findMany();
   }
 }

@@ -16,8 +16,8 @@ import {
 } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { JobService, JobWithApplicants } from './job.service';
-import { Job } from '@prisma/client';
+import { JobService, JobWithApplications } from './job.service';
+import { Jobs } from '@prisma/client';
 import {
   CreateJobDto,
   DeleteJobDto,
@@ -37,7 +37,7 @@ export class JobController {
     private readonly jobService: JobService,
   ) {}
   @Get()
-  getJobs(): Promise<JobWithApplicants[]> {
+  getJobs(): Promise<JobWithApplications[]> {
     console.log(3333333);
 
     return this.jobService.getJobs();
@@ -46,7 +46,7 @@ export class JobController {
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  createJob(@Req() req: Request, @Body() dto: CreateJobDto): Promise<Job> {
+  createJob(@Req() req: Request, @Body() dto: CreateJobDto): Promise<Jobs> {
     return this.jobService.createJob(req.user.id, dto);
   }
 
@@ -56,7 +56,7 @@ export class JobController {
   // updateJobById(
   //   @Req() req: Request,
   //   @Body() dto: UpdateJobDto,
-  // ): Promise<Applicants> {
+  // ): Promise<Applications> {
   //   return this.jobService.updateJobById(req.user.id, dto);
   // }
 

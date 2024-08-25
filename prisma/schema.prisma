@@ -13,18 +13,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Users {
   id Int @id @default(autoincrement())
   email String @unique
   hashedPassword String
   nickName String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  jobs Job[]
-  chats Chat[]
-}
+  jobs Jobs[]
+  chats Chats[]
+  notices Notices[]
+} 
 
-model Job {
+model Jobs {
   id Int @id @default(autoincrement())
   location String
   startDate DateTime
@@ -33,28 +34,40 @@ model Job {
   description String?
   userId Int
   status Boolean? // null進行中、true完了
-  user User @relation(fields: [userId], references: [id])  
-  applicants Applicants[]
+  users Users @relation(fields: [userId], references: [id])  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  applications Applications[]
+  notices Notices[]
 }
 
-model Applicants{
+model Applications{
   id Int @id @default(autoincrement())
   userId Int // 求職者のID
   jobId Int
   status Boolean? // null審査中、true採用, false不採用
-  job Job @relation(fields: [jobId], references: [id])
+  jobs Jobs @relation(fields: [jobId], references: [id])
   createdAt DateTime @default(now()) // 応募きた日時
   updatedAt DateTime @updatedAt // 採用と不採用通知
 }
 
-model Chat {
+model Notices{
+  id Int @id @default(autoincrement())
+  userId Int
+  jobId Int
+  status Boolean? // null審査中、true採用, false不採用
+  jobs Jobs @relation(fields: [jobId], references: [id])
+  users Users @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt 
+}
+
+model Chats {
   id Int @id @default(autoincrement())
   roomNum Int
   text String
   userId Int
-  user User @relation(fields: [userId], references: [id])  
+  user Users @relation(fields: [userId], references: [id])  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

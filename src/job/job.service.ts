@@ -1,6 +1,6 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Applicants, Job, User } from '@prisma/client';
+import { Jobs, Users, Applications } from '@prisma/client';
 import {
   CreateJobDto,
   DeleteJobDto,
@@ -10,20 +10,20 @@ import {
 } from './dto/update-job.dto';
 import { IJobService } from './interface/job.interface';
 
-export type JobWithApplicants = Job & {
-  user: User;
-  applicants: Applicants[];
+export type JobWithApplications = Jobs & {
+  users: Users;
+  applications: Applications[];
 };
 
 @Injectable()
 export class JobService implements IJobService {
   constructor(private prisma: PrismaService) {}
 
-  getJobs(): Promise<JobWithApplicants[]> {
-    return this.prisma.job.findMany({
+  getJobs(): Promise<JobWithApplications[]> {
+    return this.prisma.jobs.findMany({
       include: {
-        user: true,
-        applicants: true,
+        users: true,
+        applications: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -31,7 +31,7 @@ export class JobService implements IJobService {
     });
   }
 
-  // async updateJobById(userId: number, dto: UpdateJobDto): Promise<Applicants> {
+  // async updateJobById(userId: number, dto: UpdateJobDto): Promise<Applications> {
   //   const job = await this.prisma.job.findUnique({
   //     include: {
   //       applicants: true,
@@ -117,8 +117,8 @@ export class JobService implements IJobService {
   //   });
   // }
 
-  async createJob(userId: number, dto: CreateJobDto): Promise<Job> {
-    return this.prisma.job.create({
+  async createJob(userId: number, dto: CreateJobDto): Promise<Jobs> {
+    return this.prisma.jobs.create({
       data: {
         ...dto,
         userId: userId,
@@ -127,7 +127,7 @@ export class JobService implements IJobService {
   }
 
   async deleteJobById(userId: number, dto: DeleteJobDto): Promise<void> {
-    const job = await this.prisma.job.findUnique({
+    const job = await this.prisma.jobs.findUnique({
       where: {
         id: dto.jobId,
       },
@@ -136,7 +136,7 @@ export class JobService implements IJobService {
     if (!job || job.userId !== userId)
       throw new ForbiddenException('No permission to delete');
 
-    await this.prisma.job.delete({
+    await this.prisma.jobs.delete({
       where: {
         id: dto.jobId,
       },

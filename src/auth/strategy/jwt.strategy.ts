@@ -31,7 +31,7 @@ export class JwtStrategy
   }
   // jwtが正しければ、jwtとsercretkeyからpayloadを復元
   async validate(payload: { sub: number; email: string }) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.users.findUnique({
       where: {
         id: payload.sub,
       },

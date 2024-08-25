@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateApplicantDto {
+export class CreateApplicationDto {
   @IsNumber()
   @IsNotEmpty()
   jobId: number;
@@ -12,10 +12,10 @@ export class UpdateJobDto {
   jobId: number;
 }
 
-export class UpdateApplicantDto {
+export class UpdateApplicationDto {
   @IsNumber()
   @IsNotEmpty()
-  applicantId: number;
+  applicationId: number;
 
   @IsBoolean()
   @IsNotEmpty()
