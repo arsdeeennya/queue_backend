@@ -87,5 +87,12 @@ export class ApplicationService implements IApplicationService {
       where: { id: applicationId },
       data: { status },
     });
+    // // chatsにレコードcreate
+    // await this.prisma.chats.create({
+    //   data: {
+    //     applicationId: applicationId,
+    //     message: '応募が承認されました',
+    //   },
+    // });
   }
 }

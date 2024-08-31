@@ -39,7 +39,7 @@ export class UpdateJobAddAcceptedIdDto {
 
   @IsNumber()
   @IsNotEmpty()
-  noticeId: number;
+  notificationId: number;
 }
 
 export class UpdateJobAddRejectedIdDto {
@@ -53,7 +53,7 @@ export class UpdateJobAddRejectedIdDto {
 
   @IsNumber()
   @IsNotEmpty()
-  noticeId: number;
+  notificationId: number;
 }
 
 export class DeleteJobDto {

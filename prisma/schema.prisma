@@ -22,7 +22,7 @@ model Users {
   updatedAt DateTime @updatedAt
   jobs Jobs[]
   chats Chats[]
-  notices Notices[]
+  notifications Notifications[]
 } 
 
 model Jobs {
@@ -38,7 +38,7 @@ model Jobs {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   applications Applications[]
-  notices Notices[]
+  notifications Notifications[]
 }
 
 model Applications{
@@ -51,11 +51,11 @@ model Applications{
   updatedAt DateTime @updatedAt // 採用と不採用通知
 }
 
-model Notices{
+model Notifications{
   id Int @id @default(autoincrement())
   userId Int
   jobId Int
-  status Boolean? // null審査中、true採用, false不採用
+  status Boolean? 
   jobs Jobs @relation(fields: [jobId], references: [id])
   users Users @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) 
