@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Users, Jobs, Applications } from '@prisma/client';
 import { IUserService } from './interface/user.interface';
 
-export type UserWithJobs = Users & {
+export type UserModel = Users & {
   jobs: (Jobs & {
     applications: Applications[];
   })[];
@@ -30,7 +30,7 @@ export class UserService implements IUserService {
     return user;
   }
 
-  async getUser(userId: number): Promise<UserWithJobs> {
+  async getUser(userId: number): Promise<UserModel> {
     return await this.prisma.users.findUnique({
       where: {
         id: userId,

@@ -1,6 +1,6 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Jobs, Users, Applications } from '@prisma/client';
+import { Jobs, Users, Applications, Chats } from '@prisma/client';
 import {
   CreateJobDto,
   DeleteJobDto,
@@ -10,20 +10,22 @@ import {
 } from './dto/update-job.dto';
 import { IJobService } from './interface/job.interface';
 
-export type JobWithApplications = Jobs & {
+export type JobModel = Jobs & {
   users: Users;
   applications: Applications[];
+  chats: Chats[];
 };
 
 @Injectable()
 export class JobService implements IJobService {
   constructor(private prisma: PrismaService) {}
 
-  getJobs(): Promise<JobWithApplications[]> {
+  getJobs(): Promise<JobModel[]> {
     return this.prisma.jobs.findMany({
       include: {
         users: true,
         applications: true,
+        chats: true,
       },
       orderBy: {
         createdAt: 'desc',

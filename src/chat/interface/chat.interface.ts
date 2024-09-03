@@ -1,5 +1,5 @@
 import { Chats } from '@prisma/client';
 
 export interface IChatService {
-  getChats(): Promise<Chats[]>;
+  getChats(id: string): Promise<Chats[]>;
 }

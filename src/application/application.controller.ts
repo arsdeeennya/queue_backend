@@ -8,7 +8,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApplicationService, ApplicationsWithJob } from './application.service';
+import { ApplicationService, ApplicationModel } from './application.service';
 import { AuthGuard } from '@nestjs/passport';
 import {
   CreateApplicationDto,
@@ -27,7 +27,7 @@ export class ApplicationController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getApplications(@Req() req: Request): Promise<ApplicationsWithJob[]> {
+  getApplications(@Req() req: Request): Promise<ApplicationModel[]> {
     return this.applicationService.getApplications(req.user.id);
   }
 
@@ -44,8 +44,11 @@ export class ApplicationController {
   // 採用
   @UseGuards(AuthGuard('jwt'))
   @Patch('updateStatus')
-  updateApplication(@Body() dto: UpdateApplicationDto): Promise<void> {
-    return this.applicationService.updateApplication(dto);
+  updateApplication(
+    @Req() req: Request,
+    @Body() dto: UpdateApplicationDto,
+  ): Promise<void> {
+    return this.applicationService.updateApplication(req.user.id, dto);
   }
 
   // // 不採用

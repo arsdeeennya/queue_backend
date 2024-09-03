@@ -4,12 +4,14 @@ import {
   CreateApplicationDto,
   UpdateApplicationDto,
 } from './dto/application.dto';
-import { Applications, Jobs, Users } from '@prisma/client';
+import { Applications, Chats, Jobs, Users } from '@prisma/client';
 import { IApplicationService } from './interface/application.interface';
+import { v4 as uuidv4 } from 'uuid';
 
-export type ApplicationsWithJob = Applications & {
+export type ApplicationModel = Applications & {
   jobs: Jobs & {
     users: Users;
+    chats: Chats[];
   };
 };
 
@@ -18,7 +20,7 @@ export class ApplicationService implements IApplicationService {
   constructor(private prisma: PrismaService) {}
 
   // 応募を取得する
-  async getApplications(userId: number): Promise<ApplicationsWithJob[]> {
+  async getApplications(userId: number): Promise<ApplicationModel[]> {
     // const result = await this.prisma.$queryRaw<ApplicationsWithJob[]>(
     //   Prisma.sql`
     //     SELECT *
@@ -48,6 +50,7 @@ export class ApplicationService implements IApplicationService {
         jobs: {
           include: {
             users: true,
+            chats: true,
           },
         },
       },
@@ -72,27 +75,45 @@ export class ApplicationService implements IApplicationService {
     userId: number,
     dto: CreateApplicationDto,
   ): Promise<Applications> {
-    return this.prisma.applications.create({
+    const application = await this.prisma.applications.create({
       data: {
         ...dto,
         userId: userId,
       },
     });
+
+    // // notificationsテーブルにレコードを追加
+    // await this.prisma.notifications.create({
+    //   data: {
+    //     userId,
+    //     jobId: dto.jobId,
+    //     type: NotificationType.APPLICATION,
+    //   },
+    // });
+    return application;
   }
 
   // 応募者を更新する
-  async updateApplication(dto: UpdateApplicationDto): Promise<void> {
-    const { applicationId, status } = dto;
+  async updateApplication(
+    userId: number,
+    dto: UpdateApplicationDto,
+  ): Promise<void> {
+    const { applicationId, jobId, status } = dto;
     await this.prisma.applications.update({
       where: { id: applicationId },
       data: { status },
     });
-    // // chatsにレコードcreate
-    // await this.prisma.chats.create({
-    //   data: {
-    //     applicationId: applicationId,
-    //     message: '応募が承認されました',
-    //   },
-    // });
+
+    const uniqueId = uuidv4();
+    console.log('A unique ID:', uniqueId);
+    // chatsにレコードcreate
+    await this.prisma.chats.create({
+      data: {
+        roomId: uniqueId,
+        userId: userId,
+        jobId: jobId,
+        text: '',
+      },
+    });
   }
 }

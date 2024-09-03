@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { JobService, JobWithApplications } from './job.service';
+import { JobService, JobModel } from './job.service';
 import { Jobs } from '@prisma/client';
 import {
   CreateJobDto,
@@ -37,7 +37,7 @@ export class JobController {
     private readonly jobService: JobService,
   ) {}
   @Get()
-  getJobs(): Promise<JobWithApplications[]> {
+  getJobs(): Promise<JobModel[]> {
     console.log(3333333);
 
     return this.jobService.getJobs();

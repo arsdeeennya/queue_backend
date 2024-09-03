@@ -17,6 +17,10 @@ export class UpdateApplicationDto {
   @IsNotEmpty()
   applicationId: number;
 
+  @IsNumber()
+  @IsNotEmpty()
+  jobId: number;
+
   @IsBoolean()
   @IsNotEmpty()
   status: boolean;

@@ -39,13 +39,14 @@ model Jobs {
   updatedAt DateTime @updatedAt
   applications Applications[]
   notifications Notifications[]
+  chats Chats[]
 }
 
 model Applications{
   id Int @id @default(autoincrement())
   userId Int // 求職者のID
   jobId Int
-  status Boolean? // null審査中、true採用, false不採用
+  status Boolean? // null審査中、true承認, false不承認
   jobs Jobs @relation(fields: [jobId], references: [id])
   createdAt DateTime @default(now()) // 応募きた日時
   updatedAt DateTime @updatedAt // 採用と不採用通知
@@ -55,19 +56,28 @@ model Notifications{
   id Int @id @default(autoincrement())
   userId Int
   jobId Int
-  status Boolean? 
+  type NotificationType 
   jobs Jobs @relation(fields: [jobId], references: [id])
   users Users @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) 
   updatedAt DateTime @updatedAt 
 }
 
+enum NotificationType {
+  APPLICATION // 応募
+  APPROVAL // 承諾
+  REJECT // 不承諾
+  COMPLETED // 完了
+}
+
 model Chats {
   id Int @id @default(autoincrement())
-  roomNum Int
-  text String
+  roomId String
   userId Int
-  user Users @relation(fields: [userId], references: [id])  
+  jobId Int
+  text String
+  users Users @relation(fields: [userId], references: [id])  
+  jobs Jobs @relation(fields: [jobId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

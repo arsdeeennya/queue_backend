@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { UserService, UserWithJobs } from './user.service';
+import { UserService, UserModel } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Users } from '@prisma/client';
 
@@ -29,7 +29,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getUser(@Req() req: Request): Promise<UserWithJobs> {
+  getUser(@Req() req: Request): Promise<UserModel> {
     return this.userService.getUser(req.user.id);
   }
 

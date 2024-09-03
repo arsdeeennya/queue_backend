@@ -7,7 +7,20 @@ import { IChatService } from './interface/chat.interface';
 export class ChatService implements IChatService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getChats(): Promise<Chats[]> {
-    return this.prisma.chats.findMany();
+  getChats(id: string): Promise<Chats[]> {
+    return this.prisma.chats.findMany({
+      where: {
+        roomId: id,
+      },
+    });
+  }
+
+  createChat(userId: string, chat: Chats): Promise<Chats> {
+    return this.prisma.chats.create({
+      data: {
+        ...chat,
+        userId: Number(userId),
+      },
+    });
   }
 }
