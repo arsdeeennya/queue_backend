@@ -51,6 +51,16 @@ export class ApplicationController {
     return this.applicationService.updateApplication(req.user.id, dto);
   }
 
+  // 取り消す
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('cancel')
+  cancelApplication(
+    @Req() req: Request,
+    @Body() dto: { jobId: number },
+  ): Promise<void> {
+    return this.applicationService.cancelApplication(req.user.id, dto.jobId);
+  }
+
   // // 不採用
   // @Patch('addRejectedId/')
   // addRejectedId(@Body() dto: UpdateJobAddRejectedIdDto): Promise<void> {

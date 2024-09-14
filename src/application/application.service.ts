@@ -116,4 +116,14 @@ export class ApplicationService implements IApplicationService {
       },
     });
   }
+
+  // 取り消す
+  async cancelApplication(userId: number, jobId: number): Promise<void> {
+    await this.prisma.applications.deleteMany({
+      where: {
+        userId: userId,
+        jobId: jobId,
+      },
+    });
+  }
 }
