@@ -119,6 +119,7 @@ export class JobService implements IJobService {
   //   });
   // }
 
+  // 並べる人を募集する
   async createJob(userId: number, dto: CreateJobDto): Promise<Jobs> {
     return this.prisma.jobs.create({
       data: {
@@ -128,6 +129,7 @@ export class JobService implements IJobService {
     });
   }
 
+  // 削除する
   async deleteJobById(userId: number, dto: DeleteJobDto): Promise<void> {
     const job = await this.prisma.jobs.findUnique({
       where: {
@@ -137,6 +139,17 @@ export class JobService implements IJobService {
 
     if (!job || job.userId !== userId)
       throw new ForbiddenException('No permission to delete');
+
+    // 応募があるときは削除できない
+    const applications = await this.prisma.applications.findMany({
+      where: {
+        jobId: dto.jobId,
+        deletedAt: null,
+      },
+    });
+    if (applications.length > 0) {
+      throw new ForbiddenException('応募があるため削除できません。');
+    }
 
     await this.prisma.jobs.delete({
       where: {

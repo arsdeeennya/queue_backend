@@ -75,6 +75,18 @@ export class ApplicationService implements IApplicationService {
     userId: number,
     dto: CreateApplicationDto,
   ): Promise<Applications> {
+    // ジョブの応募者のステータスをチェック
+    const existingApplication = await this.prisma.applications.findFirst({
+      where: {
+        jobId: dto.jobId,
+        status: true,
+      },
+    });
+
+    if (existingApplication) {
+      throw new Error('このジョブは既に応募が承認されています。');
+    }
+
     const application = await this.prisma.applications.create({
       data: {
         ...dto,
@@ -95,7 +107,7 @@ export class ApplicationService implements IApplicationService {
     return application;
   }
 
-  // 承諾する
+  // 承諾or不承諾
   async updateApplication(
     userId: number,
     dto: UpdateApplicationDto,
@@ -107,7 +119,12 @@ export class ApplicationService implements IApplicationService {
     });
 
     if (!notification) {
-      throw new Error('Notification not found');
+      throw new Error('通知が見つかりません。');
+    }
+
+    // キャンセルされている場合は、承諾or不承諾できない
+    if (notification.applications.deletedAt) {
+      throw new Error('この応募はキャンセルされています。');
     }
 
     await this.prisma.$transaction(async () => {
@@ -150,7 +167,11 @@ export class ApplicationService implements IApplicationService {
     });
 
     if (!application) {
-      throw new Error('Application not found');
+      throw new Error('応募が見つかりません。');
+    }
+
+    if (application.status) {
+      throw new Error('このジョブは既に応募が承認されています。');
     }
 
     // ジョブ取得

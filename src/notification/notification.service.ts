@@ -14,6 +14,7 @@ export type NotificationModel = Notifications & {
       users: Users;
     })[];
     chats: Chats[];
+    users: Users;
   };
   users: Users;
 };
@@ -35,6 +36,7 @@ export class NotificationService {
               },
             },
             chats: true,
+            users: true,
           },
         },
         users: true,

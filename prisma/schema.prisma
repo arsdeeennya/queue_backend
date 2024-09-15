@@ -76,7 +76,7 @@ model Notifications{
 enum NotificationType {
   APPLICATION // 応募
   CANCEL // キャンセル
-  DELETE // 削除
+  DELETE // 削除（応募あるときに削除はできないから、これは使わない）
   APPROVAL // 承諾
   REJECT // 不承諾
   COMPLETED // 完了
