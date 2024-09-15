@@ -140,7 +140,7 @@ export class ApplicationService implements IApplicationService {
     });
   }
 
-  // 取り消す
+  // キャンセル
   async cancelApplication(userId: number, jobId: number): Promise<void> {
     const application = await this.prisma.applications.findFirst({
       where: {
@@ -153,16 +153,24 @@ export class ApplicationService implements IApplicationService {
       throw new Error('Application not found');
     }
 
-    await this.prisma.applications.deleteMany({
+    // ジョブ取得
+    const job = await this.prisma.jobs.findUnique({
+      where: { id: jobId },
+    });
+
+    await this.prisma.applications.updateMany({
       where: {
         userId: userId,
         jobId: jobId,
+      },
+      data: {
+        deletedAt: new Date(),
       },
     });
 
     await this.prisma.notifications.create({
       data: {
-        userId,
+        userId: job.userId,
         jobId: jobId,
         applicationId: application.id,
         type: NotificationType.CANCEL,

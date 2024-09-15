@@ -51,7 +51,7 @@ export class ApplicationController {
     return this.applicationService.updateApplication(req.user.id, dto);
   }
 
-  // 取り消す
+  // キャンセル
   @UseGuards(AuthGuard('jwt'))
   @Patch('cancel')
   cancelApplication(
