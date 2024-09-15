@@ -20,6 +20,7 @@ model Users {
   nickName String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
   jobs Jobs[]
   chats Chats[]
   notifications Notifications[]
@@ -37,7 +38,8 @@ model Jobs {
   status Boolean? // null進行中、true完了
   users Users @relation(fields: [userId], references: [id])  
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt  
+  deletedAt DateTime?
   applications Applications[]
   notifications Notifications[]
   chats Chats[]
@@ -51,8 +53,9 @@ model Applications{
   jobs Jobs @relation(fields: [jobId], references: [id])
   users Users @relation(fields: [userId], references: [id])
   notifications Notifications[]
-  createdAt DateTime @default(now()) // 応募きた日時
-  updatedAt DateTime @updatedAt // 採用と不採用通知
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt 
+  deletedAt DateTime?
 }
 
 model Notifications{
@@ -67,6 +70,7 @@ model Notifications{
   applications Applications @relation(fields: [applicationId], references: [id])
   createdAt DateTime @default(now()) 
   updatedAt DateTime @updatedAt 
+  deletedAt DateTime?
 }
 
 enum NotificationType {
@@ -88,4 +92,5 @@ model Chats {
   jobs Jobs @relation(fields: [jobId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
