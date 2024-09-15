@@ -88,6 +88,7 @@ export class ApplicationService implements IApplicationService {
       data: {
         userId: job.userId,
         ...dto,
+        applicationId: application.id,
         type: NotificationType.APPLICATION,
       },
     });
@@ -108,7 +109,8 @@ export class ApplicationService implements IApplicationService {
       await this.prisma.notifications.create({
         data: {
           userId,
-          ...dto,
+          jobId,
+          applicationId,
           type: NotificationType.APPROVAL,
         },
       });
@@ -127,16 +129,29 @@ export class ApplicationService implements IApplicationService {
 
   // 取り消す
   async cancelApplication(userId: number, jobId: number): Promise<void> {
+    const application = await this.prisma.applications.findFirst({
+      where: {
+        userId: userId,
+        jobId: jobId,
+      },
+    });
+
+    if (!application) {
+      throw new Error('Application not found');
+    }
+
     await this.prisma.applications.deleteMany({
       where: {
         userId: userId,
         jobId: jobId,
       },
     });
+
     await this.prisma.notifications.create({
       data: {
         userId,
         jobId: jobId,
+        applicationId: application.id,
         type: NotificationType.CANCEL,
       },
     });
