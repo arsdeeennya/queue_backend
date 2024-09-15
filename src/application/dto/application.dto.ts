@@ -24,6 +24,10 @@ export class UpdateApplicationDto {
   @IsBoolean()
   @IsNotEmpty()
   status: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  applicationUserId: number;
 }
 
 export class UpdateJobAddRejectedIdDto {

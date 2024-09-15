@@ -43,7 +43,7 @@ export class ApplicationController {
 
   // 採用
   @UseGuards(AuthGuard('jwt'))
-  @Patch('updateStatus')
+  @Patch()
   updateApplication(
     @Req() req: Request,
     @Body() dto: UpdateApplicationDto,

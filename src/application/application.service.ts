@@ -100,18 +100,19 @@ export class ApplicationService implements IApplicationService {
     userId: number,
     dto: UpdateApplicationDto,
   ): Promise<void> {
-    const { applicationId, jobId, status } = dto;
+    const { applicationId, jobId, status, applicationUserId } = dto;
     await this.prisma.$transaction(async () => {
       await this.prisma.applications.update({
         where: { id: applicationId },
         data: { status },
       });
+      const type = status ? NotificationType.APPROVAL : NotificationType.REJECT;
       await this.prisma.notifications.create({
         data: {
-          userId,
+          userId: applicationUserId,
           jobId,
           applicationId,
-          type: NotificationType.APPROVAL,
+          type: type,
         },
       });
       const uniqueId = uuidv4();
