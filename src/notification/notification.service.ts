@@ -27,7 +27,7 @@ export class NotificationService {
     userId: number,
     unreadOnly: boolean = false,
   ): Promise<NotificationModel[]> {
-    return this.prisma.notifications.findMany({
+    const notifications = await this.prisma.notifications.findMany({
       where: {
         userId: userId,
         ...(unreadOnly ? { readAt: null } : {}),
@@ -50,5 +50,21 @@ export class NotificationService {
         createdAt: 'desc',
       },
     });
+
+    if (!unreadOnly) {
+      // unreadOnlyがfalseの場合、readAtを更新
+      const now = new Date();
+      await this.prisma.notifications.updateMany({
+        where: {
+          userId: userId,
+          readAt: null,
+        },
+        data: {
+          readAt: now,
+        },
+      });
+    }
+
+    return notifications;
   }
 }
