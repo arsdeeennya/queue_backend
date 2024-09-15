@@ -38,12 +38,6 @@ export class ApplicationService implements IApplicationService {
     //       END DESC
     //   `,
     // );
-    // console.log(8888888);
-    // console.log(8888888);
-    // console.log(8888888);
-    // console.log(8888888);
-    // console.log(8888888);
-    // console.log(result);
     // return result;
     return await this.prisma.applications.findMany({
       include: {

@@ -31,7 +31,6 @@ export class ChatController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   createChat(@Req() req: Request, @Body() chat: Chats): Promise<Chats> {
-    console.log(33333, req.user);
     return this.chatService.createChat(req.user.id, chat);
   }
 }

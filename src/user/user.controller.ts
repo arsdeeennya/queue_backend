@@ -23,7 +23,6 @@ export class UserController {
 
   // @Get() // why does it inculede  user object in request(probabury by AuthGUard?? read doc!!)
   // getLoginUser(@Req() req: Request): User {
-  //   console.log(6666666);
   //   return req.user as User;
   // }
 

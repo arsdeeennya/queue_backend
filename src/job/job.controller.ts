@@ -38,8 +38,6 @@ export class JobController {
   ) {}
   @Get()
   getJobs(): Promise<JobModel[]> {
-    console.log(3333333);
-
     return this.jobService.getJobs();
   }
 
