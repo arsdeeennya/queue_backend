@@ -4,7 +4,13 @@ import {
   CreateApplicationDto,
   UpdateApplicationDto,
 } from './dto/application.dto';
-import { Applications, Chats, Jobs, Users } from '@prisma/client';
+import {
+  Applications,
+  Chats,
+  Jobs,
+  NotificationType,
+  Users,
+} from '@prisma/client';
 import { IApplicationService } from './interface/application.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -64,7 +70,7 @@ export class ApplicationService implements IApplicationService {
     });
   }
 
-  // 応募者を作成する
+  // ここに並ぶ
   async createApplication(
     userId: number,
     dto: CreateApplicationDto,
@@ -75,39 +81,44 @@ export class ApplicationService implements IApplicationService {
         userId: userId,
       },
     });
-
-    // // notificationsテーブルにレコードを追加
-    // await this.prisma.notifications.create({
-    //   data: {
-    //     userId,
-    //     jobId: dto.jobId,
-    //     type: NotificationType.APPLICATION,
-    //   },
-    // });
+    await this.prisma.notifications.create({
+      data: {
+        userId,
+        ...dto,
+        type: NotificationType.APPLICATION,
+      },
+    });
     return application;
   }
 
-  // 応募者を更新する
+  // 承諾する
   async updateApplication(
     userId: number,
     dto: UpdateApplicationDto,
   ): Promise<void> {
     const { applicationId, jobId, status } = dto;
-    await this.prisma.applications.update({
-      where: { id: applicationId },
-      data: { status },
-    });
-
-    const uniqueId = uuidv4();
-    console.log('A unique ID:', uniqueId);
-    // chatsにレコードcreate
-    await this.prisma.chats.create({
-      data: {
-        roomId: uniqueId,
-        userId: userId,
-        jobId: jobId,
-        text: '',
-      },
+    await this.prisma.$transaction(async () => {
+      await this.prisma.applications.update({
+        where: { id: applicationId },
+        data: { status },
+      });
+      await this.prisma.notifications.create({
+        data: {
+          userId,
+          ...dto,
+          type: NotificationType.APPROVAL,
+        },
+      });
+      const uniqueId = uuidv4();
+      // chatsにレコードcreate
+      await this.prisma.chats.create({
+        data: {
+          roomId: uniqueId,
+          userId: userId,
+          jobId: jobId,
+          text: '',
+        },
+      });
     });
   }
 
@@ -117,6 +128,13 @@ export class ApplicationService implements IApplicationService {
       where: {
         userId: userId,
         jobId: jobId,
+      },
+    });
+    await this.prisma.notifications.create({
+      data: {
+        userId,
+        jobId: jobId,
+        type: NotificationType.CANCEL,
       },
     });
   }
