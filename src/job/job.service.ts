@@ -1,12 +1,6 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  Jobs,
-  Users,
-  Applications,
-  Chats,
-  NotificationType,
-} from '@prisma/client';
+import { Jobs, Users, Applications, Chats } from '@prisma/client';
 import {
   CreateJobDto,
   DeleteJobDto,
