@@ -100,31 +100,43 @@ export class ApplicationService implements IApplicationService {
     userId: number,
     dto: UpdateApplicationDto,
   ): Promise<void> {
-    const { applicationId, jobId, status, applicationUserId } = dto;
+    const { notificationId, status } = dto;
+    const notification = await this.prisma.notifications.findUnique({
+      where: { id: notificationId },
+      include: { applications: true, jobs: true },
+    });
+
+    if (!notification) {
+      throw new Error('Notification not found');
+    }
+
     await this.prisma.$transaction(async () => {
       await this.prisma.applications.update({
-        where: { id: applicationId },
+        where: { id: notification.applicationId },
         data: { status },
       });
+
       const type = status ? NotificationType.APPROVAL : NotificationType.REJECT;
       await this.prisma.notifications.create({
         data: {
-          userId: applicationUserId,
-          jobId,
-          applicationId,
+          userId: notification.applications.userId,
+          jobId: notification.jobId,
+          applicationId: notification.applicationId,
           type: type,
         },
       });
-      const uniqueId = uuidv4();
-      // chatsにレコードcreate
-      await this.prisma.chats.create({
-        data: {
-          roomId: uniqueId,
-          userId: userId,
-          jobId: jobId,
-          text: '',
-        },
-      });
+
+      if (status) {
+        const uniqueId = uuidv4();
+        await this.prisma.chats.create({
+          data: {
+            roomId: uniqueId,
+            userId: userId,
+            jobId: notification.jobId,
+            text: '',
+          },
+        });
+      }
     });
   }
 
