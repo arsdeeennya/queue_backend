@@ -23,10 +23,15 @@ export type NotificationModel = Notifications & {
 export class NotificationService {
   constructor(private prisma: PrismaService) {}
 
-  async getUserNotifications(userId: number): Promise<NotificationModel[]> {
-    const notifications = await this.prisma.notifications.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
+  async getUserNotifications(
+    userId: number,
+    unreadOnly: boolean = false,
+  ): Promise<NotificationModel[]> {
+    return this.prisma.notifications.findMany({
+      where: {
+        userId: userId,
+        ...(unreadOnly ? { readAt: null } : {}),
+      },
       include: {
         jobs: {
           include: {
@@ -41,7 +46,9 @@ export class NotificationService {
         },
         users: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
-    return notifications;
   }
 }
