@@ -23,6 +23,7 @@ model Users {
   jobs Jobs[]
   chats Chats[]
   notifications Notifications[]
+  applications Applications[]
 } 
 
 model Jobs {
@@ -48,6 +49,7 @@ model Applications{
   jobId Int
   status Boolean? // null審査中、true承諾, false不承諾
   jobs Jobs @relation(fields: [jobId], references: [id])
+  users Users @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) // 応募きた日時
   updatedAt DateTime @updatedAt // 採用と不採用通知
 }
@@ -56,6 +58,7 @@ model Notifications{
   id Int @id @default(autoincrement())
   userId Int
   jobId Int
+  applicationId Int
   type NotificationType 
   read Boolean? // nullの場合は未読, trueの場合は既読
   jobs Jobs @relation(fields: [jobId], references: [id])

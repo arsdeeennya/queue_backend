@@ -81,9 +81,12 @@ export class ApplicationService implements IApplicationService {
         userId: userId,
       },
     });
+    const job = await this.prisma.jobs.findUnique({
+      where: { id: dto.jobId },
+    });
     await this.prisma.notifications.create({
       data: {
-        userId,
+        userId: job.userId,
         ...dto,
         type: NotificationType.APPLICATION,
       },

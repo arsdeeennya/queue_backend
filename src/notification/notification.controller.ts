@@ -1,27 +1,15 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { NotificationService } from './notification.service';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { NotificationModel, NotificationService } from './notification.service';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('notification')
 export class NotificationController {
   constructor(private notificationService: NotificationService) {}
 
-  //   @Post('application')
-  //   async createApplicationNotification(
-  //     @Body() body: { userId: number; jobId: number },
-  //   ) {
-  //     return this.notificationService.createApplicationNotification(
-  //       body.userId,
-  //       body.jobId,
-  //     );
-  //   }
-
-  //   @Post('cancel')
-  //   async createCancelNotification(
-  //     @Body() body: { userId: number; jobId: number },
-  //   ) {
-  //     return this.notificationService.createCancelNotification(
-  //       body.userId,
-  //       body.jobId,
-  //     );
-  //   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  getNotifications(@Req() req: Request): Promise<NotificationModel[]> {
+    return this.notificationService.getUserNotifications(req.user.id);
+  }
 }
