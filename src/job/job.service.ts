@@ -119,7 +119,7 @@ export class JobService implements IJobService {
   //   });
   // }
 
-  // 並べる人を募集する
+  // 並べる人を探す
   async createJob(userId: number, dto: CreateJobDto): Promise<Jobs> {
     return this.prisma.jobs.create({
       data: {
