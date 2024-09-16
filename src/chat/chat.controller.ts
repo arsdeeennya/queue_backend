@@ -23,8 +23,9 @@ export class ChatController {
   ) {}
 
   @Get(':id')
-  getChats(@Param('id') id: string): Promise<Chats[]> {
-    return this.chatService.getChats(id);
+  @UseGuards(AuthGuard('jwt'))
+  getChats(@Param('id') id: string, @Req() req: Request): Promise<Chats[]> {
+    return this.chatService.getChats(id, req.user.id);
   }
 
   @HttpCode(HttpStatus.CREATED)
