@@ -38,9 +38,9 @@ export class ChatService implements IChatService {
     return this.prisma.chats.findMany({
       where: {
         roomId: id,
-        text: {
-          not: '',
-        },
+        // text: {
+        //   not: '',
+        // },
       },
     });
   }
